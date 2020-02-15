@@ -79,7 +79,7 @@ class Solver:
         self,
         s: int = 0,
         f: int = 0,
-        t_range_edges: Tuple[Union[int, float]] = (0, 5),
+        t_range_edges: Tuple[Union[int, float]] = (0, 7),
         delta: float = 0.01,
     ) -> NoReturn:
         t_min, t_max = t_range_edges[0], t_range_edges[1]
@@ -87,5 +87,12 @@ class Solver:
         i_t_range: np.ndarray = np.array([self.i_t(t)[s, f] for t in t_range])
         i_d_range: np.ndarray = np.array([self.i_d(t)[s, f] for t in t_range])
         i_p_range: np.ndarray = np.array([self.i_p(t)[s, f] for t in t_range])
-        plt.plot(t_range, i_p_range)
+        fig, axis = plt.subplots(3, sharey=True, figsize=(12, 8))
+        fig.suptitle("Зміна показників інформованості у процесі формування рішення")
+        axis[0].plot(t_range, i_d_range)
+        axis[1].plot(t_range, i_p_range)
+        axis[2].plot(t_range, i_t_range)
+        axis[0].set_title("І_Д")
+        axis[1].set_title("І_П")
+        axis[2].set_title("І_Т")
         plt.show()
