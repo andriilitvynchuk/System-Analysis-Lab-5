@@ -148,22 +148,25 @@ class App(QWidget):
     def execute(self) -> NoReturn:
         if self.function_type == "default":
             self.solver = Solver(input_folder=self.input_folder.text())
-        t_0, classification = self.solver.solve(eta_max=float(self.eta_max.text()))
-        for s_index in range(len(t_0)):
-            for f_index in range(len(t_0[0])):
-                result = t_0[s_index][f_index]
-                if result == "Not available":
-                    result = ""
-                elif result == "Not exist":
-                    result = "Порож. мн-на"
-                else:
-                    result = [round(result[0], 2), round(result[1], 2)]
+        try:
+            t_0, classification = self.solver.solve(eta_max=float(self.eta_max.text()))
+            for s_index in range(len(t_0)):
+                for f_index in range(len(t_0[0])):
+                    result = t_0[s_index][f_index]
+                    if result == "Not available":
+                        result = ""
+                    elif result == "Not exist":
+                        result = "Порож. мн-на"
+                    else:
+                        result = [round(result[0], 2), round(result[1], 2)]
+                    self.table_widget.setItem(
+                        s_index, f_index, QTableWidgetItem(str(result))
+                    )
                 self.table_widget.setItem(
-                    s_index, f_index, QTableWidgetItem(str(result))
+                    s_index, 7, QTableWidgetItem(str(classification[s_index]))
                 )
-            self.table_widget.setItem(
-                s_index, 7, QTableWidgetItem(str(classification[s_index]))
-            )
+        except ValueError:
+            print("У якості рівня допуску можливе лише число")
 
     def graphic(self) -> NoReturn:
         if self.solver is not None:
