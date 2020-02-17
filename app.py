@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from backend import Solver
+from backend import Solver, CustomSolver
 
 
 class App(QWidget):
@@ -29,7 +29,7 @@ class App(QWidget):
         self.plot_factor: Optional[QLineEdit] = None
         self.eta_max: Optional[QLineEdit] = None
         self.input_folder: Optional[QLineEdit] = None
-        self.solver: Optional[Union[Solver]] = None
+        self.solver: Optional[Union[Solver, CustomSolver]] = None
         self.table_widget: Optional[QTableWidget] = None
         self.init_ui()
 
@@ -148,6 +148,8 @@ class App(QWidget):
     def execute(self) -> NoReturn:
         if self.function_type == "default":
             self.solver = Solver(input_folder=self.input_folder.text())
+        else:
+            self.solver = CustomSolver(input_folder=self.input_folder.text())
         try:
             t_0, classification = self.solver.solve(eta_max=float(self.eta_max.text()))
             for s_index in range(len(t_0)):
