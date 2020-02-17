@@ -1,8 +1,8 @@
 import os
-from typing import NoReturn, Tuple, Union, List
+from typing import List, NoReturn, Tuple, Union
 
-from matplotlib import pyplot as plt
 import numpy as np
+from matplotlib import pyplot as plt
 
 
 class Solver:
@@ -17,7 +17,7 @@ class Solver:
         self.alpha: np.ndarray = np.empty(0)
         self.beta: np.ndarray = np.empty(0)
         self.gamma: np.ndarray = np.empty(0)
-        self.t_0: List[List[List[float], str]] = [
+        self.t_0: List[List[Union[List[float], str]]] = [
             [[0, 0] for _ in range(self.a_hat.shape[1])]
             for _ in range(self.a_hat.shape[0])
         ]
@@ -86,8 +86,8 @@ class Solver:
         return output
 
     def solve(
-        self, eta_max: float = 0.9, t_max: int = 20
-    ) -> Tuple[List[List[List[float], str]], List[str]]:
+        self, eta_max: float = 0.9, t_max: int = 40
+    ) -> Tuple[List[List[Union[List[float], str]]], List[str]]:
         self.alpha: np.ndarray = self.count_alpha()
         self.beta: np.ndarray = self.count_beta()
         self.gamma: np.ndarray = self.count_gamma()
@@ -125,7 +125,7 @@ class Solver:
         self,
         s: int = 0,
         f: int = 0,
-        t_range_edges: Tuple[Union[int, float]] = (0, 50),
+        t_range_edges: Tuple[Union[int, float]] = (0, 100),
         delta: float = 0.01,
     ) -> NoReturn:
         t_min, t_max = t_range_edges[0], t_range_edges[1]
