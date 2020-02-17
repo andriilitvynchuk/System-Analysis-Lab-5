@@ -132,20 +132,20 @@ class App(QWidget):
         self.setWindowTitle("Інформаційний аналіз")
         self.show()
 
-    def open_file_name_dialog(self):
+    def open_file_name_dialog(self) -> NoReturn:
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         target_path = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         if target_path:
             self.input_folder.setText(target_path)
 
-    def function_type_handler(self, value):
+    def function_type_handler(self, value: str) -> NoReturn:
         if value == "Власний варіант функціональних залежностей":
             self.function_type = "custom"
         else:
             self.function_type = "default"
 
-    def execute(self):
+    def execute(self) -> NoReturn:
         if self.function_type == "default":
             self.solver = Solver(input_folder=self.input_folder.text())
         t_0, classification = self.solver.solve(eta_max=float(self.eta_max.text()))
@@ -165,7 +165,7 @@ class App(QWidget):
                 s_index, 7, QTableWidgetItem(str(classification[s_index]))
             )
 
-    def graphic(self):
+    def graphic(self) -> NoReturn:
         if self.solver is not None:
             try:
                 self.solver.plot_i(
